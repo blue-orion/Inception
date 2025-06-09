@@ -9,6 +9,7 @@ ENV_FILE = srcs/.env
 all: up
 
 up:
+	# $(DOCKER_COMPOSE) $(SRC) --env-file $(ENV_FILE) build
 	$(DOCKER_COMPOSE) $(SRC) --env-file $(ENV_FILE) up --build -d
 
 down:
