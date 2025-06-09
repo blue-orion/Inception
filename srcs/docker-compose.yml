@@ -1,0 +1,45 @@
+services:
+  nginx:
+    build: ./requirements/nginx
+    container_name: nginx
+    depends_on:
+      - wordpress
+    ports:
+      - "8443:443"
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - internal
+    env_file:
+      - .env
+
+  wordpress:
+    build: ./requirements/wordpress
+    container_name: wordpress
+    depends_on:
+      - mariadb
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - internal
+    env_file:
+      - .env
+
+  mariadb:
+    build: ./requirements/mariadb
+    container_name: mariadb
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - internal
+    env_file:
+      - .env
+
+volumes:
+  wordpress_data:
+  mariadb_data:
+
+networks:
+  internal:
+    driver: bridge
+
