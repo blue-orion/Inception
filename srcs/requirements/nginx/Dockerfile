@@ -10,6 +10,8 @@ RUN mkdir -p /etc/nginx/certs /run/nginx
 COPY conf/nginx.conf /etc/nginx/nginx.conf
 COPY conf/mime.types /etc/nginx/mime.types
 COPY conf/fastcgi_params /etc/nginx/fastcgi_params
+COPY conf/takwak.42.fr-key.pem /etc/nginx/certs/takwak.42.fr-key.pem
+COPY conf/takwak.42.fr.pem /etc/nginx/certs/takwak.42.fr.pem
 
 WORKDIR /var/www/html
 

@@ -14,7 +14,7 @@ fi
 
 echo "[INFO] Install wordpress..."
 wp core install \
-	--url=localhost:8443	\
+	--url=$DOMAIN_NAME	\
 	--title=Inception 		\
 	--admin_user=wpuser 	\
 	--admin_password=wppassword \
