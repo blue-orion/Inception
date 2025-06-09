@@ -18,7 +18,6 @@ stop:
 	$(DOCKER_COMPOSE) $(SRC) stop
 
 fclean: down
-	docker rmi $(shell docker images -qa)
 	docker volume rm $(shell docker volume ls -qf "name=wordpress_data") 2>/dev/null || true
 	docker volume rm $(shell docker volume ls -qf "name=mariadb_data") 2>/dev/null || true
 

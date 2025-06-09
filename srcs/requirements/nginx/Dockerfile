@@ -2,14 +2,7 @@ FROM alpine:3.21
 
 RUN apk update \
 	&& apk add --no-cache \
-		nginx	\
-		openssl	\
-		ca-certificates \
-		nss-tools
-
-RUN curl -Lo mkcert https://github.com/FiloSottile/mkcert/releases/latest/download/mkcert-linux-amd64
-RUN chmod +x mkcert
-RUN mv mkcert /usr/local/bin/
+		nginx
 
 RUN mkdir -p /etc/nginx/certs /run/nginx
 
@@ -25,5 +18,5 @@ EXPOSE 443
 COPY conf/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
 
