@@ -18,6 +18,7 @@ services:
     container_name: wordpress
     depends_on:
       - mariadb
+      - redis
     volumes:
       - wordpress_data:/var/www/html
     networks:
@@ -30,6 +31,14 @@ services:
     container_name: mariadb
     volumes:
       - mariadb_data:/var/lib/mysql
+    networks:
+      - internal
+    env_file:
+      - .env
+
+  redis:
+    build: ./requirements/bonus/redis
+    container_name: redis
     networks:
       - internal
     env_file:

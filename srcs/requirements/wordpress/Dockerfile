@@ -9,6 +9,9 @@ RUN apk update && apk add --no-cache \
 	php82-mysqli	\
 	php82-iconv		\
 	php82-mbstring	\
+  php82-redis     \
+  php82-ctype     \
+  php82-tokenizer \ 
 	php82-openssl
 
 COPY ./conf/php-fpm.conf /etc/php82/php-fpm.d/www.conf
