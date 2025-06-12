@@ -5,9 +5,7 @@ RUN apk update \
       nginx
 
 COPY conf/nginx_default.conf /etc/nginx/http.d/default.conf
-COPY tools/crossy_road.html /var/www/html/crossy_road.html
-COPY tools/crossy_road.css /var/www/html/crossy_road.css
-COPY tools/crossy_road.js /var/www/html/crossy_road.js
+COPY tools/index.html /var/www/html/index.html
 
 WORKDIR /var/www/html
 
