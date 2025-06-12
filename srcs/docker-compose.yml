@@ -4,6 +4,7 @@ services:
     container_name: nginx
     depends_on:
       - wordpress
+      - static
     ports:
       - "443:443"
     volumes:
@@ -44,6 +45,26 @@ services:
     env_file:
       - .env
 
+  vsftpd:
+    build: ./requirements/bonus/vsftpd
+    container_name: vsftpd
+    ports:
+      - "21:21"
+      - "30000-30009:30000-30009"
+    volumes:
+      - wordpress_data:/home/ftpuser
+    networks:
+      internal:
+        ipv4_address: 172.18.0.5
+    env_file:
+      - .env
+
+  static:
+    build: ./requirements/bonus/static
+    container_name: static
+    networks:
+      - internal
+
 volumes:
   wordpress_data:
   mariadb_data:
@@ -51,4 +72,7 @@ volumes:
 networks:
   internal:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
 
