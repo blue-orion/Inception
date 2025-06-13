@@ -21,6 +21,7 @@ stop:
 fclean: down
 	docker volume rm $(shell docker volume ls -qf "name=wordpress_data") 2>/dev/null || true
 	docker volume rm $(shell docker volume ls -qf "name=mariadb_data") 2>/dev/null || true
+	docker volume rm $(shell docker volume ls -qf "name=monitor_data") 2>/dev/null || true
 
 re: fclean all
 

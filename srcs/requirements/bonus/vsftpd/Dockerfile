@@ -17,7 +17,7 @@ EXPOSE 21 30000-30009
 
 WORKDIR /home/ftpuser
 
-COPY conf/entrypoint.sh /entrypoint.sh
+COPY tools/entrypoint.sh /entrypoint.sh
 RUN chmod 700 /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]

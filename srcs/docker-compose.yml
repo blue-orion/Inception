@@ -2,13 +2,17 @@ services:
   nginx:
     build: ./requirements/nginx
     container_name: nginx
+    restart: always
     depends_on:
       - wordpress
       - static
+      - adminer
+      - monitor
     ports:
       - "443:443"
     volumes:
       - wordpress_data:/var/www/html
+      - ./secrets/certificate:/etc/nginx/certs
     networks:
       - internal
     env_file:
@@ -17,6 +21,7 @@ services:
   wordpress:
     build: ./requirements/wordpress
     container_name: wordpress
+    restart: always
     depends_on:
       - mariadb
       - redis
@@ -26,20 +31,36 @@ services:
       - internal
     env_file:
       - .env
+    secrets:
+      - db_password
+      - db_root_password
+      - wp_password
+    environment:
+      - MYSQL_PASSWORD_FILE=/run/secrets/db_password
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db_root_password
+      - WP_PASSWORD=/run/secrets/wp_password
 
   mariadb:
     build: ./requirements/mariadb
     container_name: mariadb
+    restart: always
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
       - internal
     env_file:
       - .env
+    secrets:
+      - db_password
+      - db_root_password
+    environment:
+      - MYSQL_PASSWORD_FILE=/run/secrets/db_password
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db_root_password
 
   redis:
     build: ./requirements/bonus/redis
     container_name: redis
+    restart: always
     networks:
       - internal
     env_file:
@@ -48,6 +69,7 @@ services:
   vsftpd:
     build: ./requirements/bonus/vsftpd
     container_name: vsftpd
+    restart: always
     ports:
       - "21:21"
       - "30000-30009:30000-30009"
@@ -55,17 +77,37 @@ services:
       - wordpress_data:/home/ftpuser
     networks:
       internal:
-        ipv4_address: 172.18.0.5
+        ipv4_address: 172.18.0.10
     env_file:
       - .env
 
   static:
     build: ./requirements/bonus/static
     container_name: static
+    restart: always
     networks:
       - internal
 
+  adminer:
+    build: ./requirements/bonus/adminer
+    container_name: adminer
+    restart: always
+    depends_on:
+      - mariadb
+    networks:
+      - internal
+
+  monitor:
+    build: ./requirements/bonus/monitoring
+    container_name: monitor
+    restart: always
+    networks:
+      - internal
+    volumes:
+      - monitor_data:/app/data
+
 volumes:
+  monitor_data:
   wordpress_data:
   mariadb_data:
 
@@ -76,3 +118,10 @@ networks:
       config:
         - subnet: 172.18.0.0/16
 
+secrets:
+  db_password:
+    file: ../secrets/db_password.txt
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  wp_password:
+    file: ../secrets/wp_password.txt
