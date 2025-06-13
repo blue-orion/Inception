@@ -1,7 +1,6 @@
 #!/bin/sh
 
 CONFIG_PATH=/var/www/html/wp-config.php
-sleep 7
 
 if [ -f "$MYSQL_PASSWORD_FILE" ]; then
   export MYSQL_PASSWORD=$(cat /run/secrets/db_password)
@@ -13,13 +12,20 @@ if [ -f "$WP_PASSWORD_FILE" ]; then
   export WP_PASSWORD=$(cat /run/secrets/wp_password)
 fi
 
+echo "[INFO] Waiting for MariaDB setting..."
+until /usr/bin/mariadb-admin ping -h"mariadb" --ssl=OFF --silent; do
+  echo "..."
+  sleep 2
+done
+
 if [ ! -f "$CONFIG_PATH" ]; then
 	echo "[INFO] Generating wp-config.php..."
 	wp config create	\
 		--dbname=$MYSQL_DATABASE	\
 		--dbuser=$MYSQL_USER		\
 		--dbpass=$MYSQL_PASSWORD	\
-		--dbhost=$DB_HOST
+		--dbhost=$DB_HOST \
+    --allow-root
 fi
 
 echo "[INFO] Install wordpress..."

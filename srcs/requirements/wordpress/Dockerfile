@@ -3,6 +3,7 @@ FROM alpine:3.21
 RUN apk update && apk add --no-cache \
 	curl	\
 	openssl	\
+  mysql-client  \
 	php82	\
 	php82-phar	\
 	php82-fpm	\
