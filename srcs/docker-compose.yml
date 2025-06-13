@@ -12,7 +12,7 @@ services:
       - "443:443"
     volumes:
       - wordpress_data:/var/www/html
-      - ./secrets/certificate:/etc/nginx/certs
+      - ../secrets/certificate:/etc/nginx/certs:ro
     networks:
       - internal
     env_file:
@@ -38,7 +38,7 @@ services:
     environment:
       - MYSQL_PASSWORD_FILE=/run/secrets/db_password
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db_root_password
-      - WP_PASSWORD=/run/secrets/wp_password
+      - WP_PASSWORD_FILE=/run/secrets/wp_password
 
   mariadb:
     build: ./requirements/mariadb

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ -f "$MYSQL_PASSWORD_FILE" ]; then
-  export MYSQL_PASSWORD=$(cat /run/secrets/dp_password)
+  export MYSQL_PASSWORD=$(cat /run/secrets/db_password)
 fi
 if [ -f "$MYSQL_ROOT_PASSWORD_FILE" ]; then
   export MYSQL_ROOT_PASSWORD=$(cat /run/secrets/db_root_password)

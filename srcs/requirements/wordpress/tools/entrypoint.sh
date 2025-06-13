@@ -4,7 +4,7 @@ CONFIG_PATH=/var/www/html/wp-config.php
 sleep 7
 
 if [ -f "$MYSQL_PASSWORD_FILE" ]; then
-  export MYSQL_PASSWORD=$(cat /run/secrets/dp_password)
+  export MYSQL_PASSWORD=$(cat /run/secrets/db_password)
 fi
 if [ -f "$MYSQL_ROOT_PASSWORD_FILE" ]; then
   export MYSQL_ROOT_PASSWORD=$(cat /run/secrets/db_root_password)
@@ -12,10 +12,6 @@ fi
 if [ -f "$WP_PASSWORD_FILE" ]; then
   export WP_PASSWORD=$(cat /run/secrets/wp_password)
 fi
-
-do
-  echo "$VAR"
-done
 
 if [ ! -f "$CONFIG_PATH" ]; then
 	echo "[INFO] Generating wp-config.php..."
